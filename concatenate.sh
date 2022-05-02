@@ -1,7 +1,7 @@
 ### CONCATENATE FILES FROM BASESPACE FOLDERS ###
 
 user_directory=${BASH_ARGV[0]}
-find ./ -type f | grep -i .fna$ | xargs -i cp {} ./
+find ./ -type f | grep -i gz$ | xargs -i cp {} ./
 
 gunzip *_L00?_R1_001.fastq.gz
 
