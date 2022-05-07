@@ -22,7 +22,7 @@ for i in "${trim_filenames[@]}"
 do
   i_basename=$(basename $i .trim.fastq)
   echo "mapping $i_basename with bowtie2 ..."
-  bowtie2 --end-to-end -p 8 -x /nv/hp10/bross60/data/ref_genomes/mmas.JM15300 -q -U "$i_basename".trim.fastq -S MMAS_NCBI_"$i_basename".sam 2>> MMAS_NCBI_"$i_basename".bowtie_output.txt
+  bowtie2 --end-to-end --very-sensitive -p 8 -x /nv/hp10/bross60/data/ref_genomes/mmas.JM15300 -q -U "$i_basename".trim.fastq -S MMAS_NCBI_"$i_basename".sam 2>> MMAS_NCBI_"$i_basename".bowtie_output.txt
 done
 
 ##########################################################
@@ -34,7 +34,7 @@ for i in "${trim_filenames[@]}"
 do
   i_basename=$(basename $i .trim.fastq)
   echo "mapping $i_basename with bowtie2 ..."
-  bowtie2 --end-to-end -p 8 -x /nv/hp10/bross60/data/ref_genomes/HUMAN/HUMANGRCh38 -q -U "$i_basename".trim.fastq -S toHuman_"$i_basename".sam --un noHuman_"$i_basename".fastq 2>> Human_"$i_basename".bowtie_output.txt
+  bowtie2 --end-to-end -p 20 -x /nv/hp10/bross60/data/ref_genomes/HUMAN/HUMANGRCh38 -q -U "$i_basename".trim.fastq -S toHuman_"$i_basename".sam --un noHuman_"$i_basename".fastq 2>> Human_"$i_basename".bowtie_output.txt
 done
 
 ### REMOVEING DECOY (decoyGLBR) READS WITH Bowtie2 ### version 2.4.2
@@ -46,7 +46,7 @@ for i in "${trim_filenames[@]}"
 do
   i_basename=$(basename $i .trim.fastq)
   echo "mapping $i_basename with bowtie2 ..."
-  bowtie2 --end-to-end -p 20 -x /nv/hp10/bross60/data/ref_genomes/DECOY/decoyGLBR -q -U noHuman_"$i_basename".fastq -S noHuman_toDecoyGLBR_"$i_basename".sam --un noHuman_noDecoyGLBR_"$i_basename".fastq 2>> decoyGLBR_"$i_basename".bowtie_output.txt
+  bowtie2 --end-to-end --very-sensitive -p 20 -x /nv/hp10/bross60/data/ref_genomes/DECOY/decoyGLBR -q -U noHuman_"$i_basename".fastq -S noHuman_toDecoyGLBR_"$i_basename".sam --un noHuman_noDecoyGLBR_"$i_basename".fastq 2>> decoyGLBR_"$i_basename".bowtie_output.txt
 done
 
 ### MAPPING TO MAB (MABATCC19977) WITH Bowtie2 ### version 2.4.2
@@ -58,7 +58,7 @@ for i in "${trim_filenames[@]}"
 do
   i_basename=$(basename $i .trim.fastq)
   echo "mapping $i_basename with bowtie2 ..."
-  bowtie2 --end-to-end -p 20 -x /nv/hp10/bross60/data/ref_genomes/MAB/MABATCC19977 -q -U noHuman_noDecoyGLBR_"$i_basename".fastq -S MAB_noHuman_noDecoy"$i_basename".sam 2>> MAB_noHuman_noDecoy_"$i_basename".bowtie_output.txt
+  bowtie2 --end-to-end --very-sensitive -p 20 -x /nv/hp10/bross60/data/ref_genomes/MAB/MABATCC19977 -q -U noHuman_noDecoyGLBR_"$i_basename".fastq -S MAB_noHuman_noDecoy"$i_basename".sam 2>> MAB_noHuman_noDecoy_"$i_basename".bowtie_output.txt
 done
 
 ##############################################################################
