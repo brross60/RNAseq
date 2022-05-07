@@ -2,6 +2,17 @@ module load anaconda3
 conda activate mapping
 cd xxx
 
+
+### TRIMMING ADAPTERS ###
+fastq_filenames=($(ls *.fastq))
+
+for i in "${fastq_filenames[@]}"
+do
+  i_basename=$(basename $i .fastq)
+  echo "trimming adapters from $i_basename ..."
+  cutadapt -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC -m 22 -o "$i_basename"_22bp.trim.fastq "$i_basename".fastq > "$i_basename"_22bp.cutadapt_log.txt
+done
+
 #################################
 
 trim_filenames=($(ls *.trim.fastq))
