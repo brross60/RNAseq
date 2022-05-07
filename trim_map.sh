@@ -1,10 +1,11 @@
 module load anaconda3
 conda activate mapping
+cd xxx
 
+#################################
+###############################################
 
-
-
-### MAPPING WITH Bowtie2 ###
+### REAGULAR MAPPING WITH Bowtie2 ###
 trim_filenames=($(ls *.trim.fastq))
 
 for i in "${trim_filenames[@]}"
@@ -19,8 +20,20 @@ done
 Done
 
 
+##########################################################
 
-### MAPPING NON_DECOY TO MAB Bowtie2 ### version 2.4.2
+### REMOVING HUMAN (HUMANGRCh38)READS WITH Bowtie2 ###version 2.4.2
+trim_filenames=($(ls *.trim.fastq))
+
+for i in "${trim_filenames[@]}"
+do
+  i_basename=$(basename $i .trim.fastq)
+  echo "mapping $i_basename with bowtie2 ..."
+  bowtie2 --end-to-end -p 8 -x /nv/hp10/bross60/data/ref_genomes/HUMAN/HUMANGRCh38 -q -U "$i_basename".trim.fastq -S toHuman_"$i_basename".sam --un noHuman_"$i_basename".fastq 2>> Human_"$i_basename".bowtie_output.txt
+done
+
+
+### REMOVEING DECOY (decoyGLBR) READS WITH Bowtie2 ### version 2.4.2
 bowtie2-build -f RedonePangenome_Apr12_2021_Jan16_2022.fasta decoyGLBR
 
 trim_filenames=($(ls *.trim.fastq))
@@ -29,50 +42,27 @@ for i in "${trim_filenames[@]}"
 do
   i_basename=$(basename $i .trim.fastq)
   echo "mapping $i_basename with bowtie2 ..."
-  bowtie2 --end-to-end -p 20 -x decoyGLBR -q -U "$i_basename".trim.fastq -S decoyGLBR_"$i_basename".sam --un non-decoyGLBR_"$i_basename".fastq 2>> decoyGLBR_"$i_basename".bowtie_output.txt
+  bowtie2 --end-to-end -p 20 -x /nv/hp10/bross60/data/ref_genomes/DECOY/decoyGLBR -q -U noHuman_"$i_basename".fastq -S noHuman_toDecoyGLBR_"$i_basename".sam --un noHuman_noDecoyGLBR_"$i_basename".fastq 2>> decoyGLBR_"$i_basename".bowtie_output.txt
 done
 
-### MAPPING WITH Bowtie2 ###
+### MAPPING TO MAB (MABATCC19977) WITH Bowtie2 ### version 2.4.2
 #bowtie2-build GCF_000195955.2_ASM19595v2_genomic.fna H37Rv
+
 trim_filenames=($(ls *.trim.fastq))
 
 for i in "${trim_filenames[@]}"
 do
   i_basename=$(basename $i .trim.fastq)
   echo "mapping $i_basename with bowtie2 ..."
-  bowtie2 --end-to-end -p 20 -x H37Rv -q -U non-decoyGLBR_"$i_basename".fastq -S TB_NCBI_"$i_basename".sam 2>> TB_H37Rv_"$i_basename".bowtie_output.txt
+  bowtie2 --end-to-end -p 20 -x /nv/hp10/bross60/data/ref_genomes/MAB/MABATCC19977 -q -U noHuman_noDecoyGLBR_"$i_basename".fastq -S MAB_noHuman_noDecoy"$i_basename".sam 2>> MAB_noHuman_noDecoy_"$i_basename".bowtie_output.txt
 done
 
+#/nv/hp10/bross60/data/ref_genomes/TB/H37Rv
 
-
-
-
-### MAPPING NON-HUMAN READS TO MAB WITH Bowtie2 ###
-trim_filenames=($(ls *.trim.fastq))
-
-for i in "${trim_filenames[@]}"
-do
-  i_basename=$(basename $i .trim.fastq)
-  echo "mapping $i_basename with bowtie2 ..."
-  bowtie2 --end-to-end -p 8 -x ref -q -U "$i_basename".trim.fastq -S Human_"$i_basename".sam --un Human_"$i_basename"_unmapped.fastq 2>> Human_"$i_basename".bowtie_output.txt
-done
-
-
-unmapped_filenames=($(ls *unmapped.fastq))
-
-for i in "${unmapped_filenames[@]}"
-do
-  i_basename=$(basename $i .unmapped.fastq)
-  echo "mapping $i_basename with bowtie2 ..."
-  bowtie2 --end-to-end -p 8 -x ref -q -U Human_"$i_basename"22bp_unmapped.fastq -S MAB_NCBI_minus_MAC_"$i_basename".sam 2>> MAB_NCBI_minus_Human_"$i_basename".bowtie_output.txt
-done
-
-
-
-
-
-
-
+### COUNTING FEATURES ###
+./featureCounts -a /nv/hp10/bross60/data/ref_genomes/MAB/GCF_000069185.1_ASM6918v1_genomic.gff -g gene_id -t gene -O -s 0 -o featureCounts_[insertname]_22bp.txt *.sam
+#-OR-
+./featureCounts -a /nv/hp10/bross60/data/ref_genomes/MAB/GCF_000069185.1_ASM6918v1_genomic.gff -g gene_id -t CDS -O -s 0 -o featureCounts_[insertname]_22bp.txt *.sam
 
 
 #change sam to bam so can view w/ ivg tools
