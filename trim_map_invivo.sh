@@ -3,6 +3,15 @@ conda activate mapping
 #new pace updates keep througing me to the home folder. be sure to redirect just in case this happens.
 cd xxx
 
+For this to run your need 
+####this scrip obviously
+####fastq files
+####.fna file
+####indexes
+#### executable featureCounts
+
+
+
 
 ### TRIMMING ADAPTERS ###
 #This is a for loop to trim all your files which should look like *.fastq
