@@ -1,0 +1,9 @@
+#PBS -N brits_job
+#PBS -A GT-mwhiteley3
+#PBS -j oe
+#PBS -l nodes=1:ppn=10
+#PBS -l walltime=10:00:00
+#PBS -m abe
+#PBS -M bross60@gatech.edu
+cd <insertpath for working directory>
+./trim_map.sh
