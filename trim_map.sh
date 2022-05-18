@@ -1,7 +1,6 @@
 module load anaconda3
 conda activate mapping
-#new pace updates keep througing me to the home folder. be sure to redirect just in case this happens.
-cd xxx
+
 
 
 ### TRIMMING ADAPTERS ###
