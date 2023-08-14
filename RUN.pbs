@@ -7,3 +7,13 @@
 #PBS -M bross60@gatech.edu
 cd <insertpath for working directory>
 ./trim_map.sh
+
+
+#!/bin/sh
+#SBATCH -A gts-mwhiteley3
+#SBATCH -J abscess
+#SBATCH --ntasks-per-node=10
+#SBATCH -oReport-%j.out 
+#SBATCH -t 00:12:00
+#SBATCH --mail-type=NONE,BEGIN,END,FAIL,ARRAY_TASKS,ALL
+#SBATCH --mail-user=Bross60@gatech.edu
