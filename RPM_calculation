@@ -1,0 +1,17 @@
+#calculate reads per million
+
+staticdata1 <- read.table("reads_per_sites.txt", sep = "", quote = "", header=TRUE)
+rownames(staticdata1) <- staticdata1$Pos
+staticdata1 <- staticdata1[,-1]
+
+###https://rdrr.io/github/t-arae/ngscmdr/src/R/calc_rpkm.R
+#' Calculate Reads Per Million mapped reads (RPM)
+#' @param readcount read count. atomic vector
+#' @export
+calc_rpm <- function(readcount){
+  (readcount / sum(readcount, na.rm = T)) * 10^6
+}
+
+rpmsites <- calc_rpm(staticdata1)
+
+write.csv(rpmsites,"reads_per_million.csv", row.names=TRUE)
