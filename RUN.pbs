@@ -14,7 +14,7 @@ cd <insertpath for working directory>
 #SBATCH -J abscess
 #SBATCH --ntasks-per-node=10
 #SBATCH -oReport-%j.out 
-#SBATCH -t 00:12:00
+#SBATCH -t 12:00:00
 #SBATCH --mail-type=NONE,BEGIN,END,FAIL,ARRAY_TASKS,ALL
 #SBATCH --mail-user=Bross60@gatech.edu
 
