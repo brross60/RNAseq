@@ -17,3 +17,7 @@ cd <insertpath for working directory>
 #SBATCH -t 00:12:00
 #SBATCH --mail-type=NONE,BEGIN,END,FAIL,ARRAY_TASKS,ALL
 #SBATCH --mail-user=Bross60@gatech.edu
+
+
+##https://docs.pace.gatech.edu/phoenix_cluster/slurm_guide_phnx/
+##https://docs.pace.gatech.edu/software/anacondaEnv/
