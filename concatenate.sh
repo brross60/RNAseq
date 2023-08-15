@@ -52,3 +52,4 @@ done
 
 mkdir concatenated_files
 mv *.fastq concatenated_files
+
