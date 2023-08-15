@@ -1,10 +1,10 @@
 #calculate reads per million
+###https://rdrr.io/github/t-arae/ngscmdr/src/R/calc_rpkm.R
 
 staticdata1 <- read.table("reads_per_sites.txt", sep = "", quote = "", header=TRUE)
 rownames(staticdata1) <- staticdata1$Pos
 staticdata1 <- staticdata1[,-1]
 
-###https://rdrr.io/github/t-arae/ngscmdr/src/R/calc_rpkm.R
 #' Calculate Reads Per Million mapped reads (RPM)
 #' @param readcount read count. atomic vector
 #' @export
@@ -12,6 +12,25 @@ calc_rpm <- function(readcount){
   (readcount / sum(readcount, na.rm = T)) * 10^6
 }
 
-rpmsites <- calc_rpm(staticdata1)
 
+#' Calculate RPM from featureCounts output
+#' @importFrom dplyr mutate
+#' @importFrom stringr str_detect
+#' @param df data.frame output from merge_featurecount_output()
+#' @export
+calc_rpm_from_featurecounts <-
+  function(df){
+    cn <- colnames(df)
+    cn <- cn[1:length(cn)]
+    
+    
+    for(i in cn){
+      df <- mutate(df, hoge = calc_rpm(df[[i]]))
+      colnames(df)[colnames(df) == "hoge"] <- paste0("rpm_", i)
+    }
+    df
+  }
+
+rpmsites <- calc_rpm_from_featurecounts(staticdata1)
 write.csv(rpmsites,"reads_per_million.csv", row.names=TRUE)
+
