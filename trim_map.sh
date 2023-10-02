@@ -51,6 +51,21 @@ done
 #-OR-
 ./featureCounts -a /nv/hp10/bross60/data/ref_genomes/MAB/GCF_000069185.1_ASM6918v1_genomic.gff -t CDS -g gene_id -O -s 0 -o featureCounts_[insertname]_22bp.txt *.sam
 
+### Calculates coverage with respect to MAB with samtools ###
+#-@
+#-bS
+#-0
+#-mA
+
+for i in "${sam_filenames[@]}"
+do
+	i_basename=$(basename $i _22bp.sam)
+	echo "analyzing $i_basename ..."
+	samtools view -@ 16 -bS "$i_basename"_22bp.sam > "$i_basename"_22bp.bam
+	samtools sort -@ 16 -o "$i_basename"_22bp.sorted.bam "$i_basename"_22bp.bam
+	samtools coverage -mA "$i_basename"_22bp.sorted.bam
+	samtools coverage -m -o "$i_basename"_22bp_coverage.txt "$i_basename"_22bp.sorted.bam
+done
 
 
 
