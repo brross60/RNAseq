@@ -22,10 +22,11 @@ done
 ###############################################
 ### REAGULAR MAPPING WITH Bowtie2 ###
 # be sure to note your bowtie2 version!!!!!
-# -p 8 means use ad processors your PBS whosul be nodes=1ppn=8 at minimum
-# -very-sensistive is used for MAB but just means that teh paramenter allow for bette rmanning. this sacrifies speed
-#-x is your reference genome indexes  w/ the path if needed
-# download yor desired genome (.fna) then build your indexes w/ line below. You only need to do this once. this is what bowtie uses for mapping. 
+# -p 8 means use ad processors your PBS whould be at least nodes=1ppn=8 at minimum
+# -very-sensistive is used for MAB but just means that the paramenter allow for better rmanning by seeding more. This sacrifies speed.
+#-x is your reference genome indexes w/ the path if needed
+# download your desired genome (.fna) then build your indexes w/ line below. You only need to do this once. This is what bowtie uses for mapping. Store them in your home directory not your scratch and use the path to call the data.
+#2> outputs the bowtie stats in an txt file
 
 #bowtie2-build -f MABATCC19977_genomic.fna MABATCC19977
 
@@ -35,18 +36,20 @@ for i in "${trim_filenames[@]}"
 do
   i_basename=$(basename $i .trim.fastq)
   echo "mapping $i_basename with bowtie2 ..."
-  bowtie2 --end-to-end --very-sensitive -p 8 -x /storage/home/hcoda1/9/bross60/p-mwhiteley3-0/rich_project_bio-whiteley/ref_genomes/MAB/MABATCC19977 -q -U "$i_basename".trim.fastq -S MMAS_NCBI_"$i_basename".sam 2>> MMAS_NCBI_"$i_basename".bowtie_output.txt
+  bowtie2 --end-to-end --very-sensitive -p 8 -x /storage/home/hcoda1/9/bross60/p-mwhiteley3-0/rich_project_bio-whiteley/ref_genomes/MAB/MABATCC19977 -q -U "$i_basename".trim.fastq -S MAB_NCBI_"$i_basename".sam 2>> MAB_NCBI_"$i_basename".bowtie_output.txt
 done
 
 ### COUNTING FEATURES ###
-# you much gave featureCounts progrman in your filder and do chmod +x featureCounts to make it executable
+# you much have featureCounts proggram in your folder and do >chmod +x featureCounts to make it executable
 # -a is your reference (.gff) file downloaded from ncbi
-#-g is
-#-t gene (inclides rRNA, tRNA, ncRNA)  or CDS only prootein coding
-#-O of ythe read maps to two gens/cds then thsi will count if for both. An operon will have RNA that map to muliple genes
-./featureCounts -a /nv/hp10/bross60/data/ref_genomes/MAB/GCF_000069185.1_ASM6918v1_genomic.gff -g gene_id -t gene -O -s 0 -o featureCounts_[insertname]_22bp.txt *.sam
+#-t gene (inclides rRNA, tRNA, ncRNA)  or CDS only protein coding
+#-g is what name to call the feature
+#-O if the read maps to two genes/cds then thsi will count if for both. An operon will have RNA that map to muliple genes notre that only a single base overlap will make the read be counted to a gene.
+# -s is the strandedness 0=unstranded 1=forward 2=reverse
+
+./featureCounts -a /nv/hp10/bross60/data/ref_genomes/MAB/GCF_000069185.1_ASM6918v1_genomic.gff -t gene -g gene_id -O -s 0 -o featureCounts_[insertname]_22bp.txt *.sam
 #-OR-
-./featureCounts -a /nv/hp10/bross60/data/ref_genomes/MAB/GCF_000069185.1_ASM6918v1_genomic.gff -g gene_id -t CDS -O -s 0 -o featureCounts_[insertname]_22bp.txt *.sam
+./featureCounts -a /nv/hp10/bross60/data/ref_genomes/MAB/GCF_000069185.1_ASM6918v1_genomic.gff -t CDS -g gene_id -O -s 0 -o featureCounts_[insertname]_22bp.txt *.sam
 
 
 
