@@ -52,10 +52,10 @@ done
 ./featureCounts -a /nv/hp10/bross60/data/ref_genomes/MAB/GCF_000069185.1_ASM6918v1_genomic.gff -t CDS -g gene_id -O -s 0 -o featureCounts_[insertname]_22bp.txt *.sam
 
 ### Calculates coverage with respect to MAB with samtools ###
-#-@
-#-bS
-#-0
-#-mA
+#-@ use 16 threads for parallel processing
+#-bS Convert SAM to BAM format
+#-o output sorted BAM file
+#-mA Skip alignments with MAPQ smaller than the specified minimum value (in this case, no minimum value is specified, so it'll default to 0)
 
 for i in "${sam_filenames[@]}"
 do
