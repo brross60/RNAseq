@@ -29,6 +29,7 @@ done
 #2> outputs the bowtie stats in an txt file
 
 #bowtie2-build -f MABATCC19977_genomic.fna MABATCC19977
+#bowtie-inspect MABATCC19977 -s index-check.txt
 
 trim_filenames=($(ls *.trim.fastq))
 
