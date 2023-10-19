@@ -19,5 +19,8 @@ cd <insertpath for working directory>
 #SBATCH --mail-user=Bross60@gatech.edu
 
 
+###Interactive
+salloc -A gts-mwhiteley3 -N1 --ntasks-per-node=20 -t10:00:00
+
 ##https://docs.pace.gatech.edu/phoenix_cluster/slurm_guide_phnx/
 ##https://docs.pace.gatech.edu/software/anacondaEnv/
