@@ -22,5 +22,12 @@ cd <insertpath for working directory>
 ###Interactive
 salloc -A gts-mwhiteley3 -N1 --ntasks-per-node=20 -t10:00:00
 
+
+
+The scheduler will reject a job if the job submission exceeds the 264,960 CPU-hours ÷ Number of Requested Processors.
+If your job is listed as complete with no output, please check that the nodes * cores per node * walltime < 
+264,960 processor-hours.
+1 node * 20cores * 48hrs =960 <<<< 264,960 processor-hours
+
 ##https://docs.pace.gatech.edu/phoenix_cluster/slurm_guide_phnx/
 ##https://docs.pace.gatech.edu/software/anacondaEnv/
