@@ -12,7 +12,7 @@ cd <insertpath for working directory>
 #!/bin/sh
 #SBATCH -A gts-mwhiteley3
 #SBATCH -J abscess
-#SBATCH --ntasks-per-node=10
+#SBATCH --ntasks-per-node=20
 #SBATCH -oReport-%j.out 
 #SBATCH -t 12:00:00
 #SBATCH --mail-type=ALL
