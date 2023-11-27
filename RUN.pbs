@@ -1,4 +1,7 @@
 ###Submitting a job in the background
+###make a name.sbatch file and add the line below to the very top (don't skip a line) 
+#### to run do chmod +x to the file then sbatch name.sbatch to send it to the scheduler.
+
 #!/bin/sh
 #SBATCH -A gts-mwhiteley3
 #SBATCH -J abscess
