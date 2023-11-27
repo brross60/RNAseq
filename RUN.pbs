@@ -1,14 +1,4 @@
-#PBS -N brits_job
-#PBS -A GT-mwhiteley3
-#PBS -j oe
-#PBS -l nodes=1:ppn=10
-#PBS -l walltime=10:00:00
-#PBS -m abe
-#PBS -M bross60@gatech.edu
-cd <insertpath for working directory>
-./trim_map.sh
-
-
+###Submitting a job in the background
 #!/bin/sh
 #SBATCH -A gts-mwhiteley3
 #SBATCH -J abscess
@@ -22,6 +12,8 @@ cd <insertpath for working directory>
 ###Interactive
 salloc -A gts-mwhiteley3 -N1 --ntasks-per-node=20 -t10:00:00
 
+
+*** change gts-mwhiteley3 to gts-mwhiteley3-biocluster if out of resources for the month
 
 
 The scheduler will reject a job if the job submission exceeds the 264,960 CPU-hours ÷ Number of Requested Processors.
