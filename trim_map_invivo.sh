@@ -18,7 +18,7 @@ For this to run your need
 #you do not need to change anything for this step
 # -m 22 means keep only trimed reads that are >= 22bp 
 # -o if name of output trim file "$i_basename" is a copy and paste of your orginal file name
-
+# -a is needed for AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC inhouse samples
 fastq_filenames=($(ls *.fastq))
 
 for i in "${fastq_filenames[@]}"
